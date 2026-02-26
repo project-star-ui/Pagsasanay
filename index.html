@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ilarawan mo 'ko!</title>
 
+<!-- Playful but readable font -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 body{
     margin:0;
-    font-family:'Comic Sans MS', cursive;
+    font-family:'Comic Sans MS', cursive; /* Desktop stays the same */
     background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
     background-size:400% 400%;
     animation:bgMove 10s infinite alternate;
@@ -22,7 +25,7 @@ body{
     100%{background-position:right;}
 }
 
-/* TITLE: WHITE */
+/* TITLE */
 h1{
     font-size:48px;
     font-weight:900;
@@ -61,6 +64,7 @@ h1{
 .card img{
     width:100%;
     border-radius:20px;
+    object-fit:cover;
 }
 
 /* TEXT BOX */
@@ -118,7 +122,6 @@ h1{
     z-index:3; 
 }
 
-/* FLOATING ELEMENTS */
 .floating{
     position:fixed;
     border-radius:50%;
@@ -143,15 +146,50 @@ h1{
     100% { transform:translateY(-100vh) translateX(100px) rotate(360deg); opacity:0; }
 }
 
-/* MOBILE */
+/* ========================= */
+/* MOBILE ONLY IMPROVEMENTS */
+/* ========================= */
 @media(max-width:768px){
+
+    body{
+        font-family: 'Fredoka', sans-serif; /* Override only on mobile */
+        padding:15px;
+    }
+
+    h1{
+        font-size:32px;
+    }
+
+    p{
+        font-size:16px !important;
+        padding:0 10px;
+    }
+
     .game-container{
         flex-direction:column;
+        gap:20px;
+        margin-top:30px;
+    }
+
+    .card{
+        width:95%;
+        padding:15px;
+    }
+
+    .card img{
+        height:220px;
     }
 
     .label-box{
-        font-size:36px;
+        font-size:32px;
         min-height:70px;
+        padding:18px;
+    }
+
+    .side-btn{
+        width:65px;
+        height:65px;
+        font-size:22px;
     }
 }
 </style>
@@ -235,7 +273,7 @@ function showConfetti(){
 
 loadPair();
 
-// ===== FLOATING ELEMENTS =====
+// Floating bubbles
 const colors = ["#ffb84d","#ff6666","#00bfff","#33cc33","#ff99ff"];
 for(let i=0;i<25;i++){
     let bubble = document.createElement("div");
@@ -252,5 +290,4 @@ for(let i=0;i<25;i++){
 </script>
 
 </body>
-
 </html>
