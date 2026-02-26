@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ilarawan mo 'ko!</title>
 
-<!-- Playful but readable font -->
+<!-- Playful but readable mobile font -->
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
-    font-family:'Comic Sans MS', cursive; /* Desktop stays the same */
+    font-family:'Comic Sans MS', cursive; /* Desktop stays */
     background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
     background-size:400% 400%;
     animation:bgMove 10s infinite alternate;
@@ -64,7 +64,6 @@ h1{
 .card img{
     width:100%;
     border-radius:20px;
-    object-fit:cover;
 }
 
 /* TEXT BOX */
@@ -147,12 +146,12 @@ h1{
 }
 
 /* ========================= */
-/* MOBILE ONLY IMPROVEMENTS */
+/* MOBILE IMPROVEMENTS ONLY */
 /* ========================= */
 @media(max-width:768px){
 
     body{
-        font-family: 'Fredoka', sans-serif; /* Override only on mobile */
+        font-family: 'Fredoka', sans-serif; /* override only mobile */
         padding:15px;
     }
 
@@ -174,10 +173,19 @@ h1{
     .card{
         width:95%;
         padding:15px;
+        display:flex;
+        flex-direction:column;
+        align-items:center; /* centers image */
     }
 
     .card img{
+        width:100%;
         height:220px;
+        object-fit:contain;  /* no cropping */
+        display:block;
+        margin:0 auto;       /* center horizontally */
+        background:white;
+        border-radius:20px;
     }
 
     .label-box{
@@ -223,7 +231,7 @@ Pindutin ang kanang kahon para makita ang tamang sagot!
 <audio id="clapSound" src="clap.mp3"></audio>
 
 <script>
-// ===== IMAGE PAIRS =====
+// IMAGE PAIRS
 const pairs = [
     { leftImage: "Mabilis.jpg", leftText: "Mabilis", rightImage: "Mabagal.jpg", rightText: "Mabagal" },
     { leftImage: "Mainit.jpg", leftText: "Mainit", rightImage: "Malamig.jpg", rightText: "Malamig" },
