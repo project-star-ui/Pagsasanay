@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ilarawan mo 'ko!</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Comic Sans MS', cursive;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
+    background-size:400% 400%;
+    animation:bgMove 10s infinite alternate;
+    text-align:center;
+    overflow-x:hidden;
+    position:relative;
+}
+
+@keyframes bgMove{
+    0%{background-position:left;}
+    100%{background-position:right;}
+}
+
+/* TITLE: WHITE */
+h1{
+    font-size:48px;
+    font-weight:900;
+    color:white;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    margin-top:20px;
+}
+
+/* CONTAINER */
+.game-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    margin-top:50px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:2;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:20px;
+    border-radius:25px;
+    box-shadow:0 12px 25px rgba(0,0,0,0.3);
+    width:300px;
+    transition:0.3s;
+    z-index:2;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.card img{
+    width:100%;
+    border-radius:20px;
+}
+
+/* TEXT BOX */
+.label-box{
+    margin-top:20px;
+    padding:25px;
+    border-radius:20px;
+    font-size:50px;      
+    font-weight:900;      
+    letter-spacing:1px;
+    min-height:90px;      
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.left-label{
+    background:#ffe066;
+}
+
+.right-label{
+    background:#d3f8e2;
+    cursor:pointer;
+}
+
+/* BUTTONS */
+.side-btn{
+    padding:20px;
+    border:none;
+    border-radius:50%;
+    font-size:26px;
+    cursor:pointer;
+    color:white;
+    width:80px;
+    height:80px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.3);
+    transition:0.3s;
+    z-index:2;
+}
+
+.side-btn:hover{
+    transform:scale(1.15);
+}
+
+.prev-btn{ background:#6c5ce7; }
+.next-btn{ background:#ff6b6b; }
+
+/* Confetti */
+.confetti{
+    position:fixed;
+    width:12px;
+    height:12px;
+    top:-10px;
+    animation:fall 3s linear forwards;
+    z-index:3; 
+}
+
+/* FLOATING ELEMENTS */
+.floating{
+    position:fixed;
+    border-radius:50%;
+    opacity:0.7;       
+    z-index:1; 
+    pointer-events:none;
+    animation-name:floatAnim;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(100vh) rotate(720deg);
+        opacity:0;
+    }
+}
+
+@keyframes floatAnim{
+    0% { transform:translateY(100vh) translateX(0) rotate(0deg); opacity:0; }
+    50% { opacity:0.7; }
+    100% { transform:translateY(-100vh) translateX(100px) rotate(360deg); opacity:0; }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .game-container{
+        flex-direction:column;
+    }
+
+    .label-box{
+        font-size:36px;
+        min-height:70px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎉 Ilarawan mo 'ko! 🎉</h1>
+<p style="color:white;font-size:20px;">
+Pindutin ang kanang kahon para makita ang tamang sagot!
+</p>
+
+<div class="game-container">
+
+    <button class="side-btn prev-btn" onclick="previousPair()">⬅</button>
+
+    <div class="card">
+        <img id="leftImage" src="">
+        <div class="label-box left-label" id="leftText"></div>
+    </div>
+
+    <div class="card">
+        <img id="rightImage" src="">
+        <div class="label-box right-label" id="rightText" onclick="revealAnswer()">?</div>
+    </div>
+
+    <button class="side-btn next-btn" onclick="nextPair()">➡</button>
+
+</div>
+
+<audio id="clapSound" src="clap.mp3"></audio>
+
+<script>
+// ===== IMAGE PAIRS =====
+const pairs = [
+    { leftImage: "Mabilis.jpg", leftText: "Mabilis", rightImage: "Mabagal.jpg", rightText: "Mabagal" },
+    { leftImage: "Mainit.jpg", leftText: "Mainit", rightImage: "Malamig.jpg", rightText: "Malamig" },
+    { leftImage: "Malaki.jpg", leftText: "Malaki", rightImage: "Maliit.jpg", rightText: "Maliit" },
+    { leftImage: "Malungkot.jpg", leftText: "Malungkot", rightImage: "Masaya.jpg", rightText: "Masaya" },
+    { leftImage: "Mahaba.jpg", leftText: "Mahaba", rightImage: "Maikli.jpg", rightText: "Maikli" },
+    { leftImage: "Mabango.jpg", leftText: "Mabango", rightImage: "Mabaho.jpg", rightText: "Mabaho" }
+];
+
+let currentIndex = 0;
+
+function loadPair(){
+    const pair = pairs[currentIndex];
+    document.getElementById("leftImage").src = pair.leftImage;
+    document.getElementById("leftText").innerText = pair.leftText;
+    document.getElementById("rightImage").src = pair.rightImage;
+    document.getElementById("rightText").innerText = "?";
+}
+
+function revealAnswer(){
+    document.getElementById("rightText").innerText = pairs[currentIndex].rightText;
+    document.getElementById("clapSound").play();
+    showConfetti();
+}
+
+function nextPair(){
+    currentIndex = (currentIndex + 1) % pairs.length;
+    loadPair();
+}
+
+function previousPair(){
+    currentIndex = (currentIndex - 1 + pairs.length) % pairs.length;
+    loadPair();
+}
+
+function showConfetti(){
+    for(let i=0;i<40;i++){
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random()*100 + "vw";
+        confetti.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        confetti.style.animationDuration = (Math.random()*2+2)+"s";
+        document.body.appendChild(confetti);
+        setTimeout(()=>{confetti.remove();},3000);
+    }
+}
+
+loadPair();
+
+// ===== FLOATING ELEMENTS =====
+const colors = ["#ffb84d","#ff6666","#00bfff","#33cc33","#ff99ff"];
+for(let i=0;i<25;i++){
+    let bubble = document.createElement("div");
+    bubble.classList.add("floating");
+    let size = Math.random()*40 + 20;
+    bubble.style.width = size+"px";
+    bubble.style.height = size+"px";
+    bubble.style.background = colors[Math.floor(Math.random()*colors.length)];
+    bubble.style.left = Math.random()*100 + "vw";
+    bubble.style.animationDuration = (Math.random()*10+5) + "s";
+    bubble.style.animationDelay = Math.random()*5 + "s";
+    document.body.appendChild(bubble);
+}
+</script>
+
+</body>
+</html>
